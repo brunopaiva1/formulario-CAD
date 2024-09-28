@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requerimento</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>REQUERIMENTO</h1>
+
+        <div class="section">
+            <h2>IDENTIFICAÇÃO DO REQUERENTE</h2>
+            <div class="row">
+                <label>Nome:</label>
+                <input type="text" placeholder="Nome" />
+                <label>Matrícula SIAPE:</label>
+                <input type="text" placeholder="Matrícula SIAPE" required />
+            </div>
+            <div class="row">
+                <label>Endereço:</label>
+                <input type="text" placeholder="Endereço" />
+                <label>Cidade/Estado:</label>
+                <input type="text" placeholder="Cidade/Estado" />
+            </div>
+            <div class="row">
+                <label>E-mail:</label>
+                <input type="email" placeholder="E-mail" />
+                <label>Telefone(s) com DDD:</label>
+                <input type="text" placeholder="Telefone(s) com DDD" />
+            </div>
+            <div class="row">
+                <label>Cargo/Emprego/Função:</label>
+                <input type="text" placeholder="Cargo/Emprego/Função" />
+                <label>Código/Nível/Referência:</label>
+                <input type="text" placeholder="Código/Nível/Referência" />
+            </div>
+            <div class="row ">
+                <label>Unidade de Lotação:</label>
+                <input id="latacao" type="text" placeholder="Unidade de Lotação" />
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Tipo de Vínculo com a UFERSA:</h2>
+            <div class="checkbox-group">
+                <label><input type="checkbox" /> Servidor(a) Ativo(a)</label>
+                <label><input type="checkbox" /> Aposentado(a)</label>
+                <label><input type="checkbox" /> Professor(a) Substituto(a), Visitante ou Téc. Temporário(a)</label>
+                <label><input type="checkbox" /> Beneficiário de Pensão Civil do(a) Servidor(a)</label>
+                <label><input type="checkbox" /> Beneficiário de Pensão Alimentícia do(a) Servidor(a)</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>OBJETIVO DO REQUERIMENTO</h2>
+            <div class="checkbox-group">
+                <label><input type="checkbox" /> ADICIONAL DE INSALUBRIDADE/PERICULOSIDADE</label>
+                <label><input type="checkbox" /> ABONO PERMANÊNCIA</label>
+                <label><input type="checkbox" /> AFASTAMENTO/LICENÇA</label>
+                <label><input type="checkbox" /> ALTERAÇÃO DE ASSENTAMENTO</label>
+                <label><input type="checkbox" /> GRATIF. POR ENCARGO DE CURSO/CONCURSO</label>
+                <label><input type="checkbox" /> APOSENTADORIA</label>
+                <label><input type="checkbox" /> AUXÍLIOS</label>
+                <label><input type="checkbox" /> AVERBAÇÃO DE TEMPO DE SERVIÇO</label>
+                <label><input type="checkbox" /> EXPEDIÇÃO DE CERTIFICADO</label>
+                <label><input type="checkbox" /> INCLUSÃO/EXCLUSÃO DE DEPENDENTES</label>
+                <label><input type="checkbox" /> PENSÃO CIVIL</label>
+                <label><input type="checkbox" /> INCENTIVO À QUALIFICAÇÃO</label>
+                <label><input type="checkbox" /> INCLUSÃO/EXCLUSÃO DE DEPENDENTES</label>
+                <label><input type="checkbox" /> PROGRESSÃO/PROMOÇÃO</label>
+                <label><input type="checkbox" /> PROGRESSÃO POR CAPACITAÇÃO/MÉRITO</label>
+                <label><input type="checkbox" /> REMOÇÃO</label>
+                <label><input type="checkbox" /> REVISÃO DE APOSENTADORIA</label>
+                <label><input type="checkbox" /> OUTRO. ESPECIFIQUE:</label>
+                
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>DESCRIÇÃO/JUSTIFICATIVA DO REQUERIMENTO</h2>
+            <textarea rows="4" placeholder="Descrição/Justificativa"></textarea>
+        </div>
+
+        <div class="section">
+            <div class="row">
+              <div class="signature">
+                <p>Encaminhe-se à Pró-Reitoria de Gestão de Pessoas.</p>
+                <div class="signature-line"></div>
+                <div class="date-section">
+                    <label for="date">Data:</label>
+                    <input type="date" id="date" name="date">
+                </div>
+            </div>
+            <p class="signature-text">Assinatura do(a) Servidor(a)/Requerente</p>
+                </div>
+            </div>
+        
+
+        <div class="section">
+            <h2>PROCEDIMENTOS</h2>
+            <ol>
+                <li>Preencher, imprimir e assinar o presente formulário;</li>
+                <li>Anexar documentação comprobatória (se for o caso);</li>
+                <li>Entregar na PROGEP ou no Setor de Gestão de Pessoas do Campus no qual esteja lotado(a).</li>
+            </ol>
+        </div>
+
+        
+    </div>
+    
+                <button onclick="generatePDF()">Gerar PDF</button>
+    
+    
+    
+    <script>
+
+async function generatePDF() {
+        const { jsPDF } = window.jspdf;
+
+        // Captura o conteúdo da página como uma imagem usando html2canvas
+        const element = document.querySelector('.container');  // Seleciona a div que contém o formulário
+        const canvas = await html2canvas(element);
+        const imgData = canvas.toDataURL('image/png');
+
+        // Cria um novo documento PDF
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'pt',
+            format: 'a4'
+        });
+
+        // Define a largura e altura do conteúdo no PDF
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        // Adiciona a imagem ao PDF
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        // Salva o PDF
+        pdf.save("requerimento.pdf");
+    }
+
+        // function gerarPDF() {
+        //     const { jsPDF } = window.jspdf;
+        //     const doc = new jsPDF();
+
+        //     // Obtenha os valores do formulário
+        //     const nome = document.querySelector('input[placeholder="Nome"]').value;
+        //     const matricula = document.querySelector('input[placeholder="Matrícula SIAPE"]').value;
+        //     const endereco = document.querySelector('input[placeholder="Endereço"]').value;
+        //     const cidadeEstado = document.querySelector('input[placeholder="Cidade/Estado"]').value;
+        //     const email = document.querySelector('input[placeholder="E-mail"]').value;
+        //     const telefone = document.querySelector('input[placeholder="Telefone(s) com DDD"]').value;
+        //     const cargo = document.querySelector('input[placeholder="Cargo/Emprego/Função"]').value;
+        //     const codigo = document.querySelector('input[placeholder="Código/Nível/Referência"]').value;
+        //     const unidade = document.querySelector('input[placeholder="Unidade de Lotação"]').value;
+        //     const descricao = document.querySelector('textarea').value;
+
+        //     // Adicione o conteúdo ao PDF
+        //     doc.text('REQUERIMENTO', 20, 20);
+        //     doc.text('Nome: ' + nome, 20, 30);
+        //     doc.text('Matrícula SIAPE: ' + matricula, 20, 40);
+        //     doc.text('Endereço: ' + endereco, 20, 50);
+        //     doc.text('Cidade/Estado: ' + cidadeEstado, 20, 60);
+        //     doc.text('E-mail: ' + email, 20, 70);
+        //     doc.text('Telefone(s) com DDD: ' + telefone, 20, 80);
+        //     doc.text('Cargo/Emprego/Função: ' + cargo, 20, 90);
+        //     doc.text('Código/Nível/Referência: ' + codigo, 20, 100);
+        //     doc.text('Unidade de Lotação: ' + unidade, 20, 110);
+        //     doc.text('Descrição/Justificativa: ' + descricao, 20, 120);
+
+        //     // Gere e faça o download do PDF
+        //     doc.save('requerimento.pdf');
+        // }
+    </script>
+</body>
+</html>
