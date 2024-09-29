@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.red {
+    color: red;
+}
+
+.editable {
+    border-bottom: 1px dashed gray;
+    display: inline-block;
+}
+
+.signature {
+    margin-top: 40px;
+    text-align: center;
+}
+
+[contenteditable] {
+    outline: none;
+}
+
+

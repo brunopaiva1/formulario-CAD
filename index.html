@@ -1,11 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario CAD</title>
+    <title>Formulário Avaliação</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
+    <div class="container">
+        <h1>FORMULÁRIO PARA SOLICITAÇÃO DE AVALIAÇÃO DA CHEFIA IMEDIATA PARA PROCESSO DE AVALIAÇÃO DE ESTÁGIO PROBATÓRIO DOCENTE
+        </h1>
+
+        <p>Eu, <span id="nome" class="editable red" contenteditable="true">(colocar o nome completo)</span>, solicito à 
+        <span id="chefe" class="editable red" contenteditable="true">(colocar o nome do chefe)</span>, chefe do Departamento de Engenharia e Tecnologia – DET – o preenchimento do RCI referente à 
+        <span id="avaliacao" class="editable red" contenteditable="true">xxª</span> avaliação parcial e a subsequente juntada ao processo de avaliação do estágio probatório, de número 
+        <span id="numero" class="editable red" contenteditable="true">23091.XXXXXX/20XX-XX</span> conforme RESOLUÇÃO CONSUNI/UFERSA Nº005/2017, que deverá ser encaminhado a CAD do Centro em até 15 (quinze) dias.</p>
+
+        <p>Pau dos Ferros - RN, <span id="data" class="editable red" contenteditable="true">XX de XXXX de 20XX</span>.</p>
+
+        <div class="signature">
+            __________________________________<br/>
+            Assinatura do Docente
+        </div>
+
+        <div class="signature">
+            Recebido em ____/____/_______<br/>
+            __________________________________<br/>
+            Assinatura do Chefe Imediato
+        </div>
+
+        <button onclick="gerarPDF()">Preencher e Gerar PDF</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
