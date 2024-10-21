@@ -6,17 +6,47 @@
     <title>Formulário Avaliação</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
 </head>
 <body>
-    <div class="container">
-        <h1>FORMULÁRIO PARA SOLICITAÇÃO DE AVALIAÇÃO DA CHEFIA IMEDIATA PARA PROCESSO DE AVALIAÇÃO DE ESTÁGIO PROBATÓRIO DOCENTE
-        </h1>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-        <p>Eu, <span id="nome" class="editable red" contenteditable="true">(colocar o nome completo)</span>, solicito à 
-        <span id="chefe" class="editable red" contenteditable="true">(colocar o nome do chefe)</span>, chefe do Departamento de Engenharia e Tecnologia – DET – o preenchimento do RCI referente à 
-        <span id="avaliacao" class="editable red" contenteditable="true">xxª</span> avaliação parcial e a subsequente juntada ao processo de avaliação do estágio probatório, de número 
-        <span id="numero" class="editable red" contenteditable="true">23091.XXXXXX/20XX-XX</span> conforme RESOLUÇÃO CONSUNI/UFERSA Nº005/2017, que deverá ser encaminhado a CAD do Centro em até 15 (quinze) dias.</p>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .editable {
+            border-bottom: 1px dashed gray;
+            display: inline-block;
+        }
+
+        .signature {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        [contenteditable] {
+            outline: none;
+        }
+    </style>
+    
+    <div class="container">
+        <h1>FORMULÁRIO PARA SOLICITAÇÃO DE AVALIAÇÃO DA CHEFIA IMEDIATA PARA PROCESSO DE AVALIAÇÃO DE ESTÁGIO PROBATÓRIO DOCENTE</h1>
+
+        <p>
+            Eu, <span id="nome" class="editable red" contenteditable="true">(colocar o nome completo)</span>, solicito à 
+            <span id="chefe" class="editable red" contenteditable="true">(colocar o nome do chefe)</span>, chefe do Departamento de Engenharia e Tecnologia – DET – o preenchimento do RCI referente à 
+            <span id="avaliacao" class="editable red" contenteditable="true">xxª</span> avaliação parcial e a subsequente juntada ao processo de avaliação do estágio probatório, de número 
+            <span id="numero" class="editable red" contenteditable="true">23091.XXXXXX/20XX-XX</span> conforme RESOLUÇÃO CONSUNI/UFERSA Nº005/2017, que deverá ser encaminhado a CAD do Centro em até 15 (quinze) dias.
+        </p>
 
         <p>Pau dos Ferros - RN, <span id="data" class="editable red" contenteditable="true">XX de XXXX de 20XX</span>.</p>
 
@@ -34,6 +64,29 @@
         <button onclick="gerarPDF()">Preencher e Gerar PDF</button>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function gerarPDF() {
+            var camposEditaveis = document.querySelectorAll('.editable');
+            camposEditaveis.forEach(function(campo) {
+                campo.style.color = 'black';
+            });
+        
+            const { jsPDF } = window.jspdf;
+            html2canvas(document.querySelector('.container')).then(function(canvas) {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'pt',
+                    format: 'a4'
+                });
+        
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save("formulario_avaliacao.pdf");
+            });
+        }
+    </script>
 </body>
 </html>
+
